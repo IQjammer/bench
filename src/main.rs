@@ -24,7 +24,7 @@ fn set_core_affinity(core: usize) {
 
 fn test(args: &Args) -> Vec<Duration> {
     if args.rc == 0 {
-        eprintln!("Error: rc must be greater than 0");
+        eprintln!("rc must be greater than 0");
         process::exit(0);
     }
     let mut result = Vec::with_capacity(args.rc as usize);
