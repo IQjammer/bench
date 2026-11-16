@@ -55,10 +55,18 @@ fn main() {
     let args = Args::parse();
     set_core_affinity(args.core);
 
-    let res = test(&args);
+    let mut res = test(&args);
+    res.sort_unstable();
+    let mid = res.len() /2;
+
+    let result = if res.len() % 2 == 0 {
+        (res[mid -1] + res[mid])/2
+    } else {
+        res[mid]
+    };
 
     println!(
         "Result: {:?}",
-        res.iter().sum::<Duration>() / res.len() as u32
+        result
     );
 }
