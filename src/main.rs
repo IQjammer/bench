@@ -59,7 +59,7 @@ fn main() {
     res.sort_unstable();
     let mid = res.len() /2;
 
-    let result = if res.len() % 2 == 0 {
+    let result = if res.len().is_multiple_of(2) {
         (res[mid -1] + res[mid])/2
     } else {
         res[mid]
