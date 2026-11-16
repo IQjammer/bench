@@ -7,9 +7,9 @@ use std::time::{Duration, Instant};
 #[derive(Parser, Debug)]
 struct Args {
     #[arg(short, default_value_t = 10)]
-    rc: u32,
+    runs: u32,
     #[arg(short, default_value_t = 5)]
-    wp: u32,
+    warmup: u32,
     #[arg(short, default_value_t = 2)]
     core: usize,
 
@@ -23,19 +23,19 @@ fn set_core_affinity(core: usize) {
 }
 
 fn test(args: &Args) -> Vec<Duration> {
-    if args.rc == 0 {
-        eprintln!("rc must be greater than 0");
+    if args.runs == 0 {
+        eprintln!("runs must be greater than 0");
         process::exit(0);
     }
-    let mut result = Vec::with_capacity(args.rc as usize);
-    for _ in 0..args.wp {
+    let mut result = Vec::with_capacity(args.runs as usize);
+    for _ in 0..args.warmup {
         Command::new(&args.bin)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .status()
             .expect("failed to warmup");
     }
-    for _ in 0..args.rc {
+    for _ in 0..args.runs {
         let now = Instant::now();
         let status = Command::new(&args.bin)
             .stdout(Stdio::null())
